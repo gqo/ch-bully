@@ -1,6 +1,6 @@
 name:                bully
 version:             0.1.0.0
-github:              "gqo/bully"
+github:              "gqo/ch-bully"
 license:             BSD3
 author:              "Graeme Ferguson"
 maintainer:          "graeme.ferguson@nyu.edu"
@@ -17,12 +17,13 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/gqo/bully#readme>
+description:         Please see the README on GitHub at <https://github.com/gqo/ch-bully#readme>
 
 dependencies:
 - base >= 4.7 && < 5
 - network-transport-tcp
 - distributed-process
+- binary
 
 library:
   source-dirs: src
@@ -30,7 +31,7 @@ library:
 executables:
   bully-exe:
     main:                Main.hs
-    source-dirs:         app
+    source-dirs:         node
     ghc-options:
     - -threaded
     - -rtsopts
@@ -38,6 +39,7 @@ executables:
     dependencies:
     - network-transport-tcp
     - distributed-process
+    - binary
     - bully
 
 tests:
@@ -51,4 +53,5 @@ tests:
     dependencies:
     - network-transport-tcp
     - distributed-process
+    - binary
     - bully
