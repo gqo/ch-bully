@@ -24,6 +24,8 @@ dependencies:
 - network-transport-tcp
 - distributed-process
 - binary
+- binary-orphans
+- time
 
 library:
   source-dirs: src
@@ -40,6 +42,8 @@ executables:
     - network-transport-tcp
     - distributed-process
     - binary
+    - binary-orphans
+    - time
     - bully
 
 tests:
@@ -54,4 +58,6 @@ tests:
     - network-transport-tcp
     - distributed-process
     - binary
+    - binary-orphans
+    - time
     - bully

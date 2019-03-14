@@ -59,7 +59,9 @@ coordinatorHandler (NodeState selfProcId neighbors _) (CoordinatorMessage fromPr
 
 -- To-Do:
 -- match node failures
--- match node joins
+-- match node joins - abstracted from actual nodes?
+-- spawnLocal option for timeouts
+-- receive option with global state of expected messages option for timeouts
 -- figure out timeout when received higherID election
 -- figure out timeout when received higherID answer
 runBullyNode :: NodeState -> Process ()

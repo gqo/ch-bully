@@ -5,7 +5,14 @@ module Messages where
 import Control.Distributed.Process (ProcessId)
 import GHC.Generics (Generic)
 import Data.Binary (Binary)
+import Data.Binary.Orphans
 import Data.Typeable (Typeable)
+import Data.Time.Clock (UTCTime, NominalDiffTime)
+
+data MessageType = Election | Answer | Coordinator
+    deriving (Typeable, Generic, Show, Eq)
+
+instance Binary MessageType
 
 data ElectionMessage = ElectionMessage { 
     electionFrom :: ProcessId 
@@ -27,3 +34,20 @@ data CoordinatorMessage = CoordinatorMessage {
 } deriving (Typeable, Generic, Show)
 
 instance Binary CoordinatorMessage
+
+data MonitorTimeoutMessage = MonitorTimeoutMessage {
+    monitorFrom :: ProcessId,
+    expectingFrom :: ProcessId,
+    expectedType :: MessageType,
+    timeSent :: UTCTime,
+    expectedIn :: NominalDiffTime
+} deriving (Typeable, Generic, Show)
+
+instance Binary MonitorTimeoutMessage
+
+data ExpirationNotification = ExpirationNotification {
+    expiredFrom :: ProcessId,
+    expiredType :: MessageType
+} deriving (Typeable, Generic, Show)
+
+instance Binary ExpirationNotification
