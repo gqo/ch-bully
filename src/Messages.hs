@@ -37,7 +37,7 @@ instance Binary CoordinatorMessage
 
 data MonitorTimeoutMessage = MonitorTimeoutMessage {
     monitorFrom :: ProcessId,
-    expectingFrom :: ProcessId,
+    -- expectingFrom :: ProcessId,
     expectedType :: MessageType,
     timeSent :: UTCTime,
     expectedIn :: NominalDiffTime
@@ -45,8 +45,17 @@ data MonitorTimeoutMessage = MonitorTimeoutMessage {
 
 instance Binary MonitorTimeoutMessage
 
+data MessageReceivedNotification = MessageReceivedNotification {
+    monitoringFrom :: ProcessId,
+    -- receivedFrom :: ProcessId,
+    receivedType :: MessageType,
+    timeReceived :: UTCTime
+} deriving (Typeable, Generic, Show)
+
+instance Binary MessageReceivedNotification
+
 data ExpirationNotification = ExpirationNotification {
-    expiredFrom :: ProcessId,
+    -- expiredFrom :: ProcessId,
     expiredType :: MessageType
 } deriving (Typeable, Generic, Show)
 

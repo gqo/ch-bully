@@ -19,11 +19,12 @@ main = do
     case maybeT of
         Right t -> do
             n <- newLocalNode t initRemoteTable
-            runProcess n $ do
-                self <- getSelfPid
-                selfNodeID <- getSelfNode
-                say $ "Starting bully node: " ++ show selfNodeID
+            -- runProcess n $ do
+            --     self <- getSelfPid
+            --     selfNodeID <- getSelfNode
+            --     say $ "Starting bully node: " ++ show selfNodeID
 
-                let neighbors = [] :: [ProcessId]
-                runBullyNode $ NodeState self neighbors self
+            --     let neighbors = [] :: [ProcessId]
+            --     runBullyNode $ NodeState self timeoutPid neighbors self
+            launchBullyNode n
         Left error -> print error
