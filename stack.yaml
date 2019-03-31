@@ -3,5 +3,8 @@ packages:
 - .
 extra-deps:
 - distributed-process-0.7.4@sha256:9e43cb9a27e976e3e4c054e783bdfbd6140760e70997448da66993f4674a6409
+- network-transport-tcp-0.6.0
+- network-transport-0.5.2@sha256:902e333a7b402778cdc0c811114dc432ef6e5dd0b2242558bb085b76b0a39d1a
 - binary-orphans-0.1.8.0
+- distributed-process-simplelocalnet-0.2.4@sha256:044a003f81a648f9fb9b1c7ae9cd8f753f5f1c32d9db5ff8b31e91e91f525ed7
 resolver: lts-9.21

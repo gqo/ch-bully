@@ -2,7 +2,7 @@
 
 module Messages where
 
-import Control.Distributed.Process (ProcessId)
+import Control.Distributed.Process (ProcessId, NodeId)
 import GHC.Generics (Generic)
 import Data.Binary (Binary)
 import Data.Binary.Orphans
@@ -15,25 +15,37 @@ data MessageType = Election | Answer | Coordinator
 instance Binary MessageType
 
 data ElectionMessage = ElectionMessage { 
-    electionFrom :: ProcessId 
+    electionFrom :: NodeId 
     -- electionTerm :: Int
 } deriving (Typeable, Generic, Show)
 
 instance Binary ElectionMessage
 
 data AnswerMessage = AnswerMessage {
-    answerFrom :: ProcessId 
+    answerFrom :: NodeId 
     -- answerTerm :: Int
 } deriving (Typeable, Generic, Show)
 
 instance Binary AnswerMessage
 
 data CoordinatorMessage = CoordinatorMessage { 
-    coordinatorFrom :: ProcessId 
+    coordinatorFrom :: NodeId 
     -- coordinatorTerm :: Int
 } deriving (Typeable, Generic, Show)
 
 instance Binary CoordinatorMessage
+
+data NewNodeMessage = NewNodeMessage {
+
+} deriving (Typeable, Generic, Show)
+
+instance Binary NewNodeMessage
+
+data LogStateMessage = LogStateMessage {
+
+} deriving (Typeable, Generic, Show)
+
+instance Binary LogStateMessage
 
 data MonitorTimeoutMessage = MonitorTimeoutMessage {
     monitorFrom :: ProcessId,

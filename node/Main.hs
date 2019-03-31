@@ -3,28 +3,22 @@ module Main where
 import Control.Distributed.Process
 import Control.Distributed.Process.Node ( initRemoteTable
                                         , runProcess
-                                        , newLocalNode
                                         )
-import Network.Transport.TCP (createTransport, defaultTCPParameters)
+import Control.Distributed.Process.Backend.SimpleLocalnet ( Backend
+                                                          , initializeBackend
+                                                          , newLocalNode)
 
 import Control.Concurrent (threadDelay)
+import Control.Monad (forever, forM_, void)
 
-import Control.Monad (forever, forM_)
+import System.Environment (getArgs)
 
 import BullyNode
 
 main :: IO ()
 main = do
-    maybeT <- createTransport "127.0.0.1" "10501" defaultTCPParameters
-    case maybeT of
-        Right t -> do
-            n <- newLocalNode t initRemoteTable
-            -- runProcess n $ do
-            --     self <- getSelfPid
-            --     selfNodeID <- getSelfNode
-            --     say $ "Starting bully node: " ++ show selfNodeID
+    [host, port] <- getArgs
 
-            --     let neighbors = [] :: [ProcessId]
-            --     runBullyNode $ NodeState self timeoutPid neighbors self
-            launchBullyNode n
-        Left error -> print error
+    backend <- initializeBackend host port initRemoteTable
+    
+    launchBullyNode backend

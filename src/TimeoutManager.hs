@@ -2,6 +2,8 @@ module TimeoutManager where
 
 import Control.Distributed.Process
 
+import Control.Concurrent (threadDelay)
+
 import Control.Monad (forM_)
 
 import Data.Time.Clock
@@ -25,7 +27,8 @@ partionExpiredMessages currentTime expectedMessages =
     partition (checkExpired currentTime) expectedMessages
 
 notifyExpiration :: MonitorTimeoutMessage -> Process ()
-notifyExpiration (MonitorTimeoutMessage callerID expiredType _ _) =
+notifyExpiration (MonitorTimeoutMessage callerID expiredType _ _) = do
+    say $ "TM: Sending " ++ show message ++ " to " ++ show callerID
     send callerID message
     where
         message = ExpirationNotification expiredType
@@ -38,15 +41,22 @@ handleExpiredMessages :: ManagerState -> Process ManagerState
 handleExpiredMessages (ManagerState selfProcId expectedMessages) = do
     currentTime <- liftIO $ getCurrentTime
     let (expiredMessages, expectedMessages') = partionExpiredMessages currentTime expectedMessages
+    -- say $ "TM: checking expired..."
+    -- say $ "TM: detected expired: " ++ show expiredMessages
+    -- say $ "TM: currently watching: " ++ show expectedMessages'
     
     notifyExpirations expiredMessages
 
+    -- liftIO $ threadDelay 1000000
     return $ ManagerState selfProcId expectedMessages'
     
 
 monitorTimeoutHandler :: ManagerState -> MonitorTimeoutMessage -> Process ManagerState
 monitorTimeoutHandler (ManagerState selfProcId expectedMessages) msg = do
     let expectedMessages' = msg:expectedMessages
+    say $ "TM: received monitor message: " ++ show msg
+    say $ "TM: previously watching: " ++ show expectedMessages
+    say $ "TM: currently watching: " ++ show expectedMessages'
 
     return $ ManagerState selfProcId expectedMessages'
 
@@ -63,6 +73,9 @@ removeMonitor msg (x:xs) | compareMessages msg x = xs
 receiveMessageHandler :: ManagerState -> MessageReceivedNotification -> Process ManagerState
 receiveMessageHandler (ManagerState selfProcId expectedMessages) msg = do
     let expectedMessages' = removeMonitor msg expectedMessages
+    say $ "TM: received unmonitor message: " ++ show msg
+    say $ "TM: previously watching: " ++ show expectedMessages
+    say $ "TM: currently watching: " ++ show expectedMessages'
 
     return $ ManagerState selfProcId expectedMessages'
 

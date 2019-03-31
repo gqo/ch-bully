@@ -21,8 +21,8 @@ description:         Please see the README on GitHub at <https://github.com/gqo/
 
 dependencies:
 - base >= 4.7 && < 5
-- network-transport-tcp
 - distributed-process
+- distributed-process-simplelocalnet
 - binary
 - binary-orphans
 - time
@@ -39,8 +39,8 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - network-transport-tcp
     - distributed-process
+    - distributed-process-simplelocalnet
     - binary
     - binary-orphans
     - time
@@ -55,8 +55,8 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - network-transport-tcp
     - distributed-process
+    - distributed-process-simplelocalnet
     - binary
     - binary-orphans
     - time
